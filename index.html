@@ -4,6 +4,12 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#111827">
 <title>FiloSocial | Ultimate Edition</title>
+  <link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
 <style>
 :root{
   --bg:#f6f8fc;--panel:#fff;--text:#182238;--muted:#68758d;--line:#e7ebf3;
