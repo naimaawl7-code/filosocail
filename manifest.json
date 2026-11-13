@@ -1,12 +1,14 @@
 {
-  "name": "FiloSocial",
-  "short_name": "Filo",
-  "start_url": "./index.html",
-  "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#5546d7",
   "dir": "rtl",
-  "lang": "ar",
+  "display": "standalone",
+  "name": "FiloSocial",
   "orientation": "portrait",
-  "description": "منصة تعليمية للفلسفة والاجتماعيات"
+  "scope": "/",
+  "short_name": "FiloSocial",
+  "start_url": "./index.html",
+  "theme_color": "#5546d7",
+  "id": "com.filosocial.app",
+  "description": "منصة تعليمية للفلسفة والاجتماعيات",
+  "lang": "ar"
 }
