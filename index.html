@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>FiloSocial | Ultimate Edition</title>
+<style>
+:root{
+  --bg:#f6f8fc;--panel:#fff;--text:#182238;--muted:#68758d;--line:#e7ebf3;
+  --brand:#5546d7;--brand2:#0c9b91;--soft:#f0efff;--shadow:0 14px 38px rgba(29,42,78,.07)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.75;letter-spacing:.05px}
+body.dark{--bg:#0b1020;--panel:#141c30;--text:#eef2ff;--muted:#a7b2ca;--line:#28334b;--soft:#252344;--shadow:0 14px 38px #0005}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:10px 15px;background:var(--brand);color:white;font-weight:700;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+button:hover{filter:brightness(1.04);transform:translateY(-1px);box-shadow:0 7px 18px #5145bb22}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #8f87ff66;outline-offset:2px}
+button.secondary{background:var(--soft);color:var(--brand)}
+button.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top{max-width:1320px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:900}
+.logo{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,#7566f3,#12b7a7);display:grid;place-items:center;color:#fff;font-size:22px;box-shadow:0 8px 20px #5546d733}
+.top-actions{display:flex;gap:8px;align-items:center}
+.xp{font-size:.85rem;color:var(--muted);font-weight:bold}
+.layout{max-width:1320px;margin:26px auto;padding:0 16px;display:grid;grid-template-columns:238px minmax(0,1fr);gap:22px}
+aside,.panel,.hero,.stat{background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+aside{padding:13px;height:max-content;position:sticky;top:82px}
+nav button{display:flex;width:100%;text-align:right;align-items:center;gap:10px;margin:4px 0;background:transparent;color:var(--muted);font-weight:600;border-radius:13px;padding:10px 12px;transition:.18s ease}
+nav button.active,nav button:hover{background:var(--soft);color:var(--brand)}
+nav button.active{box-shadow:inset -3px 0 var(--brand)}
+main{min-width:0}
+.hero{padding:34px;background:radial-gradient(circle at 12% 10%,#ffffff22 0 8%,transparent 8.3%),linear-gradient(120deg,#171b43 0%,#4940a7 55%,#087f82 100%);color:white;overflow:hidden;position:relative;box-shadow:0 18px 45px #26245b22}
+.hero h1{font-size:clamp(1.5rem,4vw,2.4rem);margin:0 0 8px;letter-spacing:-.6px;line-height:1.35}
+.hero p{max-width:650px;color:#e8e9ff;margin:0 0 18px;line-height:1.9}
+.hero .pill{background:#ffffff22;color:white;border:1px solid #ffffff44}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.stat{padding:17px}
+.stat b{font-size:1.65rem;display:block;letter-spacing:-.5px}
+.stat small{color:var(--muted)}
+.panel{padding:22px;margin-top:16px}
+.panel h2{margin:0 0 12px;font-size:1.2rem}
+.muted{color:var(--muted)}
+.tag{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--brand);font-size:.78rem;font-weight:bold;margin:2px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.lesson{border:1px solid var(--line);border-radius:17px;padding:14px;background:var(--panel);transition:border-color .2s,transform .2s}
+.lesson:hover{border-color:#c9c4ff;transform:translateY(-2px)}
+.lesson h3{margin:0 0 5px}
+.lesson p{margin:0;color:var(--muted);font-size:.92rem}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.field{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:13px;background:var(--bg);color:var(--text);margin:6px 0}
+.answer{display:block;width:100%;text-align:right;background:var(--bg);color:var(--text);border:1px solid var(--line);margin:8px 0}
+.answer.correct{border-color:#16a34a;background:#16a34a15}
+.answer.wrong{border-color:#dc5656;background:#dc565615}
+.hidden{display:none!important}
+.progress{height:9px;background:var(--line);border-radius:20px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));width:0;transition:width .3s}
+.timeline{border-right:3px solid var(--brand);margin:15px 10px;padding-right:18px}
+.event{position:relative;margin:0 0 18px}
+.event:before{content:"";position:absolute;right:-27px;top:9px;width:13px;height:13px;border-radius:50%;background:var(--brand);border:3px solid var(--panel)}
+.mapbox{border:1px solid var(--line);border-radius:16px;padding:14px;overflow:hidden;background:linear-gradient(135deg,#f4f7f0,#edf2e8)}
+.mapbox svg{width:100%;height:auto;display:block;background:#e6e9dc;border-radius:10px;border:1px solid #d4dccb}
+.dark .mapbox svg{background:#202b30}
+.node{display:inline-block;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);margin:5px;cursor:pointer}
+.node:hover{border-color:var(--brand);color:var(--brand)}
+.chat{height:260px;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--bg);margin:10px 0}
+.bubble{padding:9px 12px;border-radius:13px;margin:7px 0;max-width:90%;background:var(--soft);word-wrap:break-word;white-space:pre-wrap}
+.bubble.user{margin-right:auto;background:#dff5f1;color:#164b48}
+footer{text-align:center;color:var(--muted);padding:34px 12px;font-size:.85rem}
+.topo-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.topo-metric{padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.topo-metric b{display:block;font-size:1.25rem}
+#topoSvg{touch-action:manipulation;cursor:crosshair}
+#profile .field{max-width:100%}
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr;gap:12px;margin:14px auto}
+  aside{position:static;overflow:auto}
+  nav{display:flex;gap:5px;min-width:max-content}
+  nav button{width:auto;white-space:nowrap}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .topo-controls{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .grid,.cards{grid-template-columns:1fr}
+  .top{padding:10px}
+  .brand span:last-child{display:none}
+  .layout{margin:12px auto;padding:0 10px}
+  .panel{padding:16px}
+  .hero{padding:23px}
+  .xp{display:none}
+  .topo-controls{grid-template-columns:1fr 1fr}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header><div class="top"><div class="brand"><div class="logo">ف</div><span>FiloSocial <small style="color:var(--brand)">ULTIMATE</small></span></div><div class="top-actions"><span class="xp" id="xpLabel">⭐ 0 XP</span><button class="ghost" onclick="Filo.toggleTheme()" aria-label="الوضع الليلي">☾</button></div></div></header>
+<div class="layout">
+<aside><div style="font-weight:900;padding:8px 10px">مساحة التعلم</div><nav id="nav">
+<button class="active" data-page="home">⌂ الرئيسية</button><button data-page="courses">▤ الدروس</button><button data-page="quiz">✓ الاختبارات</button><button data-page="flash">▣ بطاقات الحفظ</button><button data-page="ai">✦ المعلم الذكي</button><button data-page="map">⌁ مختبر الخرائط</button><button data-page="timeline">◷ الخط الزمني</button><button data-page="knowledge">◎ خريطة المعرفة</button><button data-page="missions">🏆 المهام والبطولات</button><button data-page="focus">◉ وضع التركيز</button><button data-page="glossary">⌕ قاموس المفاهيم</button><button data-page="progress">▥ تقدمي وشهاداتي</button><button data-page="profile">👤 الملف الشخصي</button><button data-page="account">☁️ الحساب والمزامنة</button>
+</nav><div class="panel" style="padding:12px;margin-top:12px;box-shadow:none"><small class="muted">تقدمك العام</small><div class="progress"><span id="sideProgress"></span></div><b id="sidePct">0%</b></div></aside>
+<main>
+<section id="home" class="page">
+<div class="hero"><span class="tag pill">منصة التعلم الذكي</span><h1>مرحباً بك في FiloSocial</h1><p>اكتشف الفلسفة والاجتماعيات، اختبر فهمك، واربط الأفكار والأحداث في تجربة تعليمية تفاعلية واحدة.</p><button onclick="Filo.showPage('courses')">ابدأ التعلم ←</button></div>
+<div class="stats"><div class="stat"><small>النقاط المكتسبة</small><b id="statXP">0</b><small>XP</small></div><div class="stat"><small>الدروس</small><b>10</b><small>6 فلسفة + 4 اجتماعيات</small></div><div class="stat"><small>الإجابات الصحيحة</small><b id="statCorrect">0</b><small>إجابة</small></div><div class="stat"><small>الشهادات</small><b id="statCert">0</b><small>إنجاز</small></div></div>
+<div class="grid"><div class="panel"><h2>🎯 مهمة اليوم</h2><p>أكمل اختباراً قصيراً ثم راجع مفهوماً واحداً.</p><button onclick="Filo.showPage('quiz')">ابدأ المهمة</button></div><div class="panel"><h2>🧠 تابع من حيث توقفت</h2><p class="muted">اختر درساً من المكتبة للمتابعة.</p><button class="secondary" onclick="Filo.showPage('courses')">مكتبة الدروس</button></div></div>
+<div class="panel"><h2>ماذا ستتعلم؟</h2><div class="cards"><div class="lesson"><span class="tag">الفلسفة</span><h3>التفكير والنقد</h3><p>من نشأة الفلسفة إلى قواعد المنهج.</p></div><div class="lesson"><span class="tag">الاجتماعيات</span><h3>التاريخ والجغرافيا</h3><p>التحولات التاريخية وقراءة المجال الجغرافي.</p></div></div></div>
+</section>
+<section id="courses" class="page hidden"><div class="panel"><h2>📚 مكتبة الدروس</h2><input class="field" id="searchLesson" placeholder="ابحث عن درس..." oninput="Filo.renderLessons()"><div id="lessonList" class="cards"></div></div><div id="lessonDetail" class="panel hidden"></div></section>
+<section id="quiz" class="page hidden"><div class="panel"><div class="row"><h2>📝 اختبار تفاعلي</h2><span class="tag" id="quizCount">سؤال 1</span></div><div class="progress"><span id="quizProgress"></span></div><h3 id="question"></h3><div id="answers"></div><p id="feedback" class="muted"></p><div class="row"><button id="nextQ" onclick="Filo.nextQuestion()" disabled>السؤال التالي</button><button class="secondary" onclick="Filo.restartQuiz()">إعادة الاختبار</button></div></div></section>
+<section id="flash" class="page hidden"><div class="panel"><h2>🃏 بطاقات الحفظ</h2><p class="muted">حاول تذكر الإجابة قبل إظهارها.</p><div class="lesson" style="text-align:center;padding:30px"><span class="tag" id="flashTopic">مفهوم فلسفي</span><h2 id="flashQ" style="font-size:1.45rem;margin:20px 0"></h2><p id="flashA" class="hidden"></p><button onclick="document.getElementById('flashA').classList.toggle('hidden')">إظهار / إخفاء الإجابة</button></div><div class="row" style="margin-top:12px"><button class="secondary" onclick="Filo.prevFlash()">السابق</button><button onclick="Filo.nextFlash()">بطاقة أخرى</button></div></div></section>
+<section id="ai" class="page hidden"><div class="panel"><h2>✦ المعلم الذكي Filo AI</h2>
+<p class="muted">مساعد دراسي يبحث في محتوى دروس FiloSocial ويقدم شروحاً ومفاهيم وأسئلة مراجعة.</p>
+<div class="row" style="margin:10px 0"><button class="secondary" onclick="Filo.setTutorPrompt('اشرح لي هذا الدرس بطريقة سهلة للحفظ')">📘 شرح مبسط</button><button class="secondary" onclick="Filo.setTutorPrompt('أعطني أسئلة تدريبية حول الدرس')">🧩 تدريب</button><button class="secondary" onclick="Filo.setTutorPrompt('لخص لي أهم المفاهيم')">📝 المفاهيم</button><button class="secondary" onclick="Filo.setTutorPrompt('أخطائي')">🔁 مراجعة أخطائي</button></div>
+<div class="chat" id="chat"><div class="bubble">مرحباً! أنا Filo. اسألني عن دروس الفلسفة والاجتماعيات أو اطلب شرحاً وتدريباً.</div></div>
+<div class="row"><input id="aiInput" class="field" style="flex:1" placeholder="مثال: اشرح لي الحركة الإنسية..." onkeydown="if(event.key==='Enter')Filo.askAI()"><button onclick="Filo.askAI()">إرسال</button></div>
+<div class="lesson" style="margin-top:12px"><b>حول المعلم الذكي</b><p class="muted">هذا الإصدار يستخدم قاعدة معرفة محلية مرتبطة بالدروس، ولا يتصل بنموذج ذكاء اصطناعي سحابي. يمكن ربطه لاحقاً بخادم آمن لتفعيل محادثة توليدية حقيقية، دون كشف مفاتيح API في المتصفح.</p></div></div></section>
+
+<section id="map" class="page hidden">
+ <div class="panel">
+  <div class="row"><div><span class="tag">مختبر جغرافي تفاعلي</span><h2 style="margin:6px 0">🗺️ استكشف الخريطة الطبوغرافية</h2></div><span class="tag">نموذج تعليمي</span></div>
+  <p class="muted">انقر على أي موضع داخل الخريطة لقراءة ارتفاعه التقريبي. تتغير الألوان حسب الارتفاع، ويمكنك اختيار خط A–B لإنشاء مقطع طبوغرافي تدريبي.</p>
+  <div class="mapbox">
+   <svg id="topoSvg" viewBox="0 0 760 430" role="img" aria-label="خريطة طبوغرافية تفاعلية بخطوط تسوية وألوان ارتفاع">
+    <defs>
+     <linearGradient id="terrainFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dce9c8"/><stop offset=".48" stop-color="#e8dfb9"/><stop offset="1" stop-color="#c9d9b8"/></linearGradient>
+     <pattern id="mapGrid" width="38" height="38" patternUnits="userSpaceOnUse"><path d="M38 0H0V38" fill="none" stroke="#8b9b83" stroke-opacity=".25" stroke-width="1"/></pattern>
+    </defs>
+    <rect width="760" height="430" fill="url(#terrainFill)"/><rect width="760" height="430" fill="url(#mapGrid)"/>
+    <g id="contours" fill="none" stroke="#9b7049" stroke-width="2.1" opacity=".92">
+     <path d="M-30 100 C75 5 180 18 250 88 S390 165 480 88 660 0 790 65"/>
+     <path d="M-30 132 C80 38 180 48 250 118 S390 195 480 120 660 32 790 97"/>
+     <path d="M-30 165 C80 70 185 80 255 150 S395 225 485 152 665 65 790 130"/>
+     <path d="M-30 198 C85 104 190 112 260 182 S400 258 490 185 670 98 790 163"/>
+     <path d="M-30 232 C90 138 195 146 265 216 S405 292 495 218 675 132 790 198"/>
+     <path d="M-30 266 C95 172 200 180 270 250 S410 326 500 252 680 166 790 232"/>
+     <path d="M60 460 C100 350 170 300 260 315 S410 390 500 330 650 270 720 300"/>
+     <path d="M100 460 C140 365 200 330 270 345 S420 410 510 360 650 310 700 330"/>
+     <path d="M150 460 C180 385 225 360 285 375 S430 430 520 390 640 350 680 360"/>
+    </g>
+    <g fill="#795a3e" font-size="13" font-weight="700"><text x="95" y="83">200 m</text><text x="290" y="105">300 m</text><text x="480" y="75">400 m</text><text x="610" y="180">300 m</text><text x="320" y="300">200 m</text><text x="545" y="380">100 m</text></g>
+    <path id="profileLine" d="M75 365 L685 55" stroke="#d44c43" stroke-width="3.5" stroke-dasharray="10 7" fill="none"/>
+    <g fill="#fff" stroke="#b83e37" stroke-width="3"><circle cx="75" cy="365" r="7"/><circle cx="685" cy="55" r="7"/></g>
+    <g id="mapMarker" style="pointer-events:none"><circle cx="380" cy="210" r="10" fill="#fff" stroke="#5546d7" stroke-width="4"/><circle cx="380" cy="210" r="3" fill="#5546d7"/></g>
+    <g fill="#263238" font-size="16" font-weight="800"><text x="52" y="397">A</text><text x="696" y="48">B</text></g>
+    <g fill="#263238" font-size="12"><text x="16" y="22">الشمال ↑</text><text x="642" y="412">مقياس توضيحي</text></g>
+   </svg>
+  </div>
+  <div class="topo-controls">
+   <div class="topo-metric"><small class="muted">الارتفاع عند المؤشر</small><b id="mapElevation">— متر</b></div>
+   <div class="topo-metric"><small class="muted">طبيعة الانحدار</small><b id="mapSlope">—</b></div>
+   <div class="topo-metric"><small class="muted">خطوط التسوية</small><b id="mapContour">100 متر</b></div>
+  </div>
+  <div class="grid">
+   <div class="lesson"><h3>📍 قراءة موضع</h3><p class="muted">اضغط على الخريطة لعرض ارتفاع الموضع وتفسير الانحدار بصورة تقريبية.</p><p id="mapInterpretation">ابدأ بالنقر على نقطة داخل الخريطة.</p></div>
+   <div class="lesson"><h3>📐 إعداد المقطع A–B</h3><p class="muted">يعرض المقطع تغير الارتفاع على طول الخط الأحمر.</p><button onclick="Filo.drawTopoProfile()">إنشاء المقطع الطبوغرافي</button><button class="secondary" onclick="Filo.resetTopoLab()">إعادة ضبط المختبر</button></div>
+  </div>
+  <div class="lesson" style="margin-top:14px"><h3>منحنى المقطع الطبوغرافي</h3><svg id="profileChart" viewBox="0 0 700 210" style="width:100%;display:block;background:var(--bg);border-radius:12px" aria-label="رسم المقطع الطبوغرافي"><text x="350" y="105" text-anchor="middle" fill="currentColor" font-size="15">اضغط «إنشاء المقطع الطبوغرافي» لعرض المنحنى</text></svg><div class="row"><small class="muted">A: بداية المقطع</small><small class="muted">B: نهاية المقطع</small></div></div>
+  <div class="lesson" style="margin-top:14px"><b>معلومة منهجية:</b> تقارب خطوط التسوية يدل غالباً على انحدار شديد، وتباعدها يدل على انحدار ضعيف. هذا المختبر نموذج تعليمي افتراضي وليس خريطة مساحية حقيقية، لذلك لا تُستخدم قيمه في قياسات ميدانية.</div>
+ </div>
+</section>
+
+<section id="timeline" class="page hidden"><div class="panel"><h2>⏳ الخط الزمني التاريخي</h2><p class="muted">محطات مختارة من درسي الحركة الإنسية والإصلاح الديني.</p><div class="timeline"><div class="event"><b>1453م – فتح القسطنطينية</b><p class="muted">انتقال عدد من العلماء إلى إيطاليا، مما ساهم في تنشيط الحياة الفكرية.</p></div><div class="event"><b>القرنان 15 و16 – عصر النهضة</b><p class="muted">ازدهار الحركة الإنسية والتحولات الفكرية والعلمية والفنية في أوروبا.</p></div><div class="event"><b>القرن 16 – الإصلاح الديني</b><p class="muted">ظهور حركات إصلاحية وانتشار المذاهب البروتستانتية.</p></div><div class="event"><b>مجمع ترنت</b><p class="muted">محطة في إصلاح الكنيسة الكاثوليكية ومواجهة انتشار الإصلاح البروتستانتي.</p></div></div><small class="muted">ملاحظة: الخط الزمني تعليمي مختصر، ويمكن توسيعه عند إضافة وثائق ومراجع الدروس.</small></div></section>
+<section id="knowledge" class="page hidden"><div class="panel"><h2>🕸️ خريطة المعرفة</h2><p class="muted">اختر مفهوماً لاكتشاف الروابط بينه وبين الدروس.</p><div id="knowledgeNodes"><button class="node" onclick="Filo.knowledge('الفلسفة')">الفلسفة</button><button class="node" onclick="Filo.knowledge('الإنسية')">الحركة الإنسية</button><button class="node" onclick="Filo.knowledge('الإصلاح الديني')">الإصلاح الديني</button><button class="node" onclick="Filo.knowledge('التضاريس')">التضاريس</button><button class="node" onclick="Filo.knowledge('الخريطة الطبوغرافية')">الخريطة الطبوغرافية</button><button class="node" onclick="Filo.knowledge('ديكارت')">ديكارت</button><button class="node" onclick="Filo.knowledge('ابن رشد')">ابن رشد</button></div><div id="knowledgeResult" class="lesson" style="margin-top:15px">اضغط على أحد المفاهيم لعرض علاقاته.</div></div></section>
+<section id="missions" class="page hidden"><div class="panel"><h2>🏆 المهام والبطولات</h2><div class="lesson"><b>مهمة اليوم: مستكشف المعرفة</b><p>أجب عن 5 أسئلة في الاختبار.</p><div class="progress"><span id="missionBar"></span></div><small id="missionText" class="muted">0 من 5 إجابات صحيحة</small></div><div class="grid"><div class="lesson"><h3>⚡ تحدي 60 ثانية</h3><p>اختبر سرعة استدعاء المعلومات.</p><button onclick="Filo.startChallenge()">ابدأ التحدي</button><h2 id="challengeClock">60</h2><b id="challengeScore"></b><div id="challengeArea"></div></div><div class="lesson"><h3>🥇 رتبك</h3><p id="rankText">باحث مبتدئ</p><p class="muted">اجمع النقاط بالقراءة والتدريب.</p></div></div></div></section>
+<section id="focus" class="page hidden"><div class="panel" style="text-align:center"><h2>◉ وضع التركيز</h2><p class="muted">جلسة هادئة للمذاكرة دون تشتيت.</p><div style="font-size:4rem;font-weight:900" id="focusClock">25:00</div><div class="row" style="justify-content:center"><button onclick="Filo.startFocus()">ابدأ</button><button class="secondary" onclick="Filo.pauseFocus()">إيقاف مؤقت</button><button class="ghost" onclick="Filo.resetFocus()">إعادة</button></div><p id="focusMessage" class="muted">جلسة مقترحة: 25 دقيقة دراسة ثم استراحة قصيرة.</p></div></section>
+<section id="glossary" class="page hidden"><div class="panel"><h2>📖 قاموس المفاهيم</h2><input class="field" id="glossSearch" placeholder="ابحث عن مفهوم..." oninput="Filo.renderGlossary()"><div id="glossList"></div></div></section>
+<section id="progress" class="page hidden"><div class="panel"><h2>📊 تقدمي وشهاداتي</h2><p>النقاط: <b id="progressXP">0</b> XP</p><div class="progress"><span id="mainProgress"></span></div><p id="progressPercent">0% من مسار التعلم</p><h3>إنجازاتي</h3><div id="badges"></div><h3>شهادات الإنجاز</h3><div id="certificates"></div><button onclick="Filo.issueCertificate()">إصدار شهادة إتمام تجريبية</button><p class="muted">الشهادات داخل هذا الإصدار محلية للتشجيع، وليست وثائق مدرسية رسمية.</p></div></section>
+<section id="profile" class="page hidden"><div class="panel"><div class="row"><h2>👤 الملف الشخصي</h2><span class="tag">محفوظ على هذا الجهاز</span></div>
+<div class="row" style="align-items:flex-start"><div id="profileAvatar" style="width:76px;height:76px;border-radius:24px;background:linear-gradient(135deg,#7566f3,#12b7a7);display:grid;place-items:center;color:white;font-size:2rem">🎓</div><div style="flex:1"><h3 id="profileDisplayName" style="margin:0">متعلم FiloSocial</h3><p class="muted" id="profileMeta">الجذع المشترك · متعلم</p><span class="tag" id="profileRank">باحث مبتدئ</span></div></div>
+<hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><h3>تعديل الملف</h3>
+<label>الاسم المستعار</label><input id="profileName" class="field" maxlength="24" placeholder="اسم مستعار">
+<label>المستوى الدراسي</label><select id="profileGrade" class="field"><option>الجذع المشترك</option><option>الأولى باكالوريا</option><option>الثانية باكالوريا</option><option>مستوى آخر</option></select>
+<label>الصورة الرمزية</label><select id="profileEmoji" class="field"><option>🎓</option><option>📚</option><option>🧠</option><option>🌟</option><option>🦉</option><option>🚀</option></select>
+<button onclick="Filo.saveProfile()">حفظ الملف الشخصي</button>
+<div class="grid"><div class="lesson"><small class="muted">النقاط</small><h2 id="profileXP">0 XP</h2></div><div class="lesson"><small class="muted">الدروس المكتملة</small><h2 id="profileDone">0 / 10</h2></div><div class="lesson"><small class="muted">الإجابات الصحيحة</small><h2 id="profileCorrect">0</h2></div><div class="lesson"><small class="muted">الشهادات</small><h2 id="profileCerts">0</h2></div></div>
+<h3>تقدم التعلم</h3><div class="progress"><span id="profileProgress"></span></div><p class="muted" id="profileProgressText">أكمل الدروس لتطوير مستواك.</p>
+<p class="muted">تحفظ هذه البيانات في متصفحك على هذا الجهاز. لا تدخل كلمات مرور أو معلومات حساسة.</p></div></section>
+
+<section id="account" class="page hidden">
+ <div class="panel">
+  <span class="tag">الحساب والمزامنة</span><h2>☁️ حساب الطالب</h2>
+  <p class="muted">عند ربط المشروع بخدمة الخادم، يمكنك الدخول من الهاتف والحاسوب ومزامنة تقدمك. لا يتم حفظ كلمة المرور داخل ملف الموقع.</p>
+  <div id="cloudStatus" class="lesson"><b>الحالة: وضع تجريبي محلي</b><p class="muted">لم تُضف إعدادات الخادم بعد. واجهة الحساب جاهزة، لكن إنشاء الحساب والمزامنة لن يعملا قبل إعداد Supabase وتشغيل سياسات قاعدة البيانات.</p></div>
+  <div class="grid">
+   <div class="lesson"><h3>إنشاء حساب طالب</h3><label>البريد الإلكتروني</label><input id="authEmail" type="email" class="field" autocomplete="email" placeholder="student@example.com"><label>كلمة المرور</label><input id="authPassword" type="password" class="field" autocomplete="new-password" placeholder="8 أحرف على الأقل"><button id="signupBtn" onclick="Filo.cloudSignUp()">إنشاء الحساب</button></div>
+   <div class="lesson"><h3>تسجيل الدخول</h3><label>البريد الإلكتروني</label><input id="loginEmail" type="email" class="field" autocomplete="email" placeholder="البريد المستخدم عند التسجيل"><label>كلمة المرور</label><input id="loginPassword" type="password" class="field" autocomplete="current-password" placeholder="كلمة المرور"><button onclick="Filo.cloudSignIn()">تسجيل الدخول</button><button class="secondary" onclick="Filo.cloudSignOut()">تسجيل الخروج</button></div>
+  </div>
+  <div class="lesson" style="margin-top:14px"><b>خصوصية وأمان</b><p class="muted">استخدم بريداً مخصصاً للتعلم بموافقة ولي أمرك عند الحاجة، ولا تشارك كلمة المرور مع أي شخص. لا نطلب الاسم الكامل أو رقم الهاتف أو عنوان المنزل. كل طالب يرى سجله فقط بفضل سياسات الحماية في قاعدة البيانات.</p></div>
+  <p id="authMessage" class="muted" aria-live="polite"></p>
+ </div>
+</section>
+
+<footer>FiloSocial Ultimate Edition · منصة تعليمية تجريبية قابلة للتطوير</footer>
+</main></div>
+<script>
+(function(){
+"use strict";
+
+/* =========================================================
+   بيانات المحتوى
+   ========================================================= */
+const lessons=[
+{subject:"الفلسفة",title:"تقديم عام للفلسفة",summary:"الفلسفة محبة الحكمة والبحث عن الحقيقة. وهي ممارسة عقلية نقدية تقوم على التساؤل والتحليل ومناقشة الأفكار، لا على حفظ المعلومات فقط.",terms:"الفلسفة: محبة الحكمة والبحث عن الحقيقة. التفلسف: ممارسة التفكير والتساؤل والنقد. الحقيقة: معرفة ما هو صحيح والبحث عن إثباته.",questions:"ما معنى الفلسفة؟ تعني محبة الحكمة والبحث عن الحقيقة. ما الذي يميز التفكير الفلسفي؟ التساؤل والنقد واستعمال العقل."},
+{subject:"الفلسفة",title:"نشأة الفلسفة – جون بيير فرنان",summary:"ظهرت الفلسفة في اليونان نتيجة عوامل سياسية وجغرافية وثقافية واقتصادية، وشكلت انتقالاً من التفكير الأسطوري (الميتوس) إلى التفكير العقلي (اللوغوس).",terms:"الميتوس: تفسير أسطوري يعتمد الحكاية والخيال. اللوغوس: تفكير عقلي ومنطقي قائم على الحجة.",questions:"أين نشأت الفلسفة؟ في اليونان. ما عوامل نشأتها؟ سياسية وجغرافية وثقافية واقتصادية. ما الفرق بين الميتوس واللوغوس؟ الأول أسطوري والثاني عقلي."},
+{subject:"الفلسفة",title:"بداية فعل التفلسف – فريديريك نيتشه",summary:"يبرز الدرس مكانة طاليس لأنه قدم تفسيراً عقلياً لأصل الأشياء، وأرجع الكثرة إلى الوحدة، وجعل الماء أو الرطوبة المبدأ الأول.",terms:"المسلمة: فكرة أولية تحتاج إلى إثبات. الحدس: معرفة مباشرة دون وسيط. المبدأ: أساس نفسر به مجموعة من الأشياء.",questions:"لماذا يعد طاليس بداية فعل التفلسف؟ لأنه أرجع أصل الأشياء المتعددة إلى مبدأ واحد هو الماء."},
+{subject:"الفلسفة",title:"الفلسفة والدين – ابن رشد",summary:"يرى ابن رشد أن الفلسفة والدين متوافقان لأنهما يبحثان عن الحقيقة، مع اختلاف الوسيلة: الفلسفة تعتمد العقل والبرهان، والدين يعتمد الوحي والشريعة.",terms:"الحكمة: الفلسفة القائمة على العقل. الشريعة: الأحكام الدينية. القياس: استنتاج نتيجة انطلاقاً من مقدمات معلومة. النظر البرهاني: استعمال العقل والبرهان.",questions:"ما موقف ابن رشد؟ التوافق بين الفلسفة والدين. ما الفرق بين الحكمة والشريعة؟ الحكمة تعتمد العقل، والشريعة تستند إلى الوحي."},
+{subject:"الفلسفة",title:"الفلسفة والعلم – برتراند راسل",summary:"قيمة الفلسفة في التأمل والتساؤل والنقد وتحرير العقل من الجمود والتعصب، بينما يقدم العلم معارف منظمة ونتائج ملموسة اعتماداً على مناهج دقيقة.",terms:"العلم: معرفة منظمة تعتمد مناهج دقيقة. النشاط التأملي: تفكير عميق يبحث عن المعاني والغايات.",questions:"أين تكمن قيمة الفلسفة؟ في توسيع الفكر والنقد. ما الفرق بينها وبين العلم؟ العلم يقدم نتائج ملموسة، والفلسفة تنمي التساؤل والتأمل."},
+{subject:"الفلسفة",title:"الفلسفة وقواعد المنهج – رونيه ديكارت",summary:"الوصول إلى معرفة يقينية يتطلب منهجاً عقلياً منظماً. قواعد ديكارت: البداهة والوضوح، التحليل، التركيب، المراجعة والإحصاء.",terms:"المنهج: قواعد للوصول إلى الحقيقة. الشك المنهجي: شك مؤقت لفحص المعارف. التحليل: تقسيم المشكلة. التركيب: ترتيب الأفكار من البسيط إلى المعقد. الكوجيطو: أنا أفكر إذن أنا موجود.",questions:"ما قواعد المنهج الأربع؟ البداهة، التحليل، التركيب، المراجعة والإحصاء."},
+{subject:"التاريخ",title:"التحولات الفكرية والعلمية والفنية – الحركة الإنسية",summary:"شهدت أوروبا خلال القرنين 15 و16 تحولات فكرية وعلمية وفنية ارتبطت بالحركة الإنسية، وهي حركة ثقافية ظهرت بإيطاليا ثم انتشرت. اهتمت بالإنسان والعلوم والآداب والفنون وإحياء التراث اليوناني والروماني. ساعد على انتشارها ازدهار إيطاليا التجاري والمالي، وهجرة العلماء بعد فتح القسطنطينية سنة 1453م، واختراع الطباعة على يد غوتنبرغ. شملت التحولات الأدب باللغات المحلية، والرياضيات والطب والفلك، والفنون التشكيلية والعمارة.",terms:"الحركة الإنسية: حركة فكرية وثقافية اهتمت بالإنسان والعلوم والآداب والفنون وأحيت التراث القديم. الطباعة: وسيلة ساعدت على نشر الكتب والمعرفة.",questions:"ما عوامل انتشار الحركة الإنسية؟ ازدهار إيطاليا، هجرة العلماء، واختراع الطباعة. اذكر مظاهر التحول العلمي: تطور الرياضيات والطب والفلك. من أبرز فناني النهضة: ليوناردو دافنشي وميكيلانجيلو ورافائيل."},
+{subject:"التاريخ",title:"الإصلاح الديني",summary:"عرفت أوروبا في القرنين 15 و16 حركات انتقدت ممارسات الكنيسة الكاثوليكية وطالبت بالإصلاح. من أبرز قادتها مارتن لوثر بألمانيا وجون كالفن بفرنسا، وظهرت الحركة الأنجليكانية بإنجلترا في عهد هنري الثامن. ارتبط الإصلاح بعوامل دينية واقتصادية واجتماعية وسياسية، وأدى إلى انقسام المسيحيين إلى كاثوليك وبروتستانت وظهور صراعات ومحاولات إصلاح مضاد.",terms:"الإصلاح الديني: حركات انتقدت ممارسات الكنيسة وطالبت بتغييرها. البروتستانتية: مذاهب مسيحية ظهرت في سياق الإصلاح الديني. صكوك الغفران: ممارسات كنسية تعرضت لانتقادات الإصلاحيين.",questions:"ما أسباب الإصلاح الديني؟ فساد بعض الممارسات الكنسية والعوامل الاقتصادية والاجتماعية والسياسية. اذكر رواد الإصلاح: مارتن لوثر وجون كالفن وهنري الثامن في سياق الأنجليكانية. ما نتائجه؟ انقسام ديني وظهور مذاهب وصراعات وإصلاحات داخل الكنيسة."},
+{subject:"الجغرافيا",title:"المجموعات البنيوية الكبرى وأشكال التضاريس",summary:"يتكون سطح الأرض من مجموعات بنيوية كبرى: الدروع والكتل القديمة، الأحواض الرسوبية، والسلاسل الجبلية الحديثة. وتتنوع التضاريس إلى جبال وهضاب وسهول. تتدخل عوامل باطنية بطيئة وسريعة، وعوامل خارجية كالتجوية والتعرية في تشكيلها.",terms:"الأحواض الرسوبية: مناطق تتراكم فيها الرواسب. الجبال: مرتفعات ذات قمم ومنحدرات. الهضاب: مساحات مرتفعة شبه مستوية. السهول: أراض منبسطة قليلة الانحدار. التجوية: تفكك وتحلل الصخور. التعرية: حت ونقل وترسيب المواد.",questions:"ما المجموعات البنيوية الكبرى؟ الدروع والكتل القديمة، الأحواض الرسوبية، السلاسل الجبلية الحديثة. ما أشكال التضاريس؟ الجبال والهضاب والسهول. ما الفرق بين التجوية والتعرية؟ التجوية تفكك الصخور، والتعرية تحث وتنقل وترسب."},
+{subject:"الجغرافيا",title:"قراءة خريطة طبوغرافية وإنجاز مقطع طبوغرافي",summary:"تُقرأ الخريطة الطبوغرافية بالاعتماد على العنوان والمفتاح والمقياس والاتجاهات والرموز وخطوط التسوية. تساعد خطوط التسوية على تحديد الارتفاع والانحدار، ويُنجز المقطع الطبوغرافي بنقل نقاط تقاطع خط المقطع مع خطوط التسوية إلى محور أفقي ثم إسقاط الارتفاعات وفق مقياس رأسي مناسب.",terms:"الخريطة الطبوغرافية: تمثيل مصغر لسطح الأرض يبرز التضاريس والمعالم. خطوط التسوية: خطوط تصل بين نقاط متساوية الارتفاع. المقطع الطبوغرافي: تمثيل جانبي لشكل التضاريس على امتداد خط محدد. المفتاح: شرح الرموز المستعملة في الخريطة.",questions:"ما عناصر قراءة الخريطة؟ العنوان والمفتاح والمقياس والاتجاهات والرموز وخطوط التسوية. ماذا يدل تقارب خطوط التسوية؟ على انحدار شديد غالباً. ما المقطع الطبوغرافي؟ تمثيل جانبي للتضاريس على خط معين."}
+];
+const glossary=[
+["الميتوس","تفسير أسطوري يعتمد الحكاية والخيال."],["اللوغوس","تفكير عقلي ومنطقي قائم على الحجة."],["الحركة الإنسية","حركة فكرية وثقافية اهتمت بالإنسان والعلوم والفنون."],["الإصلاح الديني","حركات انتقدت ممارسات الكنيسة وطالبت بالإصلاح."],["الأحواض الرسوبية","مناطق منخفضة تتراكم فيها الرواسب."],["التجوية","تفكك الصخور أو تحللها بفعل عوامل طبيعية."],["التعرية","حت المواد ونقلها ثم ترسيبها."],["خطوط التسوية","خطوط تصل بين نقاط لها الارتفاع نفسه."],["المقطع الطبوغرافي","تمثيل جانبي للتضاريس على امتداد خط."],["المنهج","قواعد منظمة تساعد على الوصول إلى الحقيقة."],["الحدس","معرفة مباشرة دون وسيط."],["القياس","استنتاج نتيجة من مقدمات معلومة."]
+];
+const quizData=[
+["ما معنى الحركة الإنسية؟",["حركة ثقافية اهتمت بالإنسان والعلوم والفنون","حركة عسكرية","نظام اقتصادي"],0,"الحركة الإنسية اهتمت بالإنسان والمعرفة والتراث القديم."],
+["ما الحدث الذي ساهم في انتقال علماء إلى إيطاليا سنة 1453؟",["فتح القسطنطينية","اكتشاف أمريكا","الثورة الصناعية"],0,"ارتبط ذلك بفتح القسطنطينية وانتقال عدد من العلماء."],
+["من مخترع الطباعة الحديثة المرتبط بانتشار أفكار النهضة؟",["غوتنبرغ","ديكارت","كالفن"],0,"يوهانس غوتنبرغ."],
+["من أبرز قادة الإصلاح الديني في ألمانيا؟",["مارتن لوثر","رافائيل","طاليس"],0,"مارتن لوثر."],
+["ما إحدى نتائج الإصلاح الديني؟",["انقسام المسيحيين إلى كاثوليك وبروتستانت","اختفاء المدن","توقف التجارة"],0,"أدى الإصلاح إلى انقسام ديني وظهور مذاهب."],
+["ما المجموعات البنيوية الكبرى؟",["الدروع والكتل القديمة والأحواض والسلاسل الحديثة","الجبال والأنهار فقط","المناخات"],0,"هذه هي المجموعات البنيوية الكبرى الواردة في الدرس."],
+["ما الفرق بين التجوية والتعرية؟",["التجوية تفكك الصخور والتعرية تنحت وتنقل وترسب","هما الشيء نفسه","التعرية بناء الصخور"],0,"التجوية تفتت أو تحلل، والتعرية تنحت وتنقل وترسب."],
+["ماذا تعني خطوط التسوية؟",["نقاط متساوية الارتفاع","حدود الدول","طرق النقل"],0,"كل خط يصل نقاطاً لها الارتفاع نفسه."],
+["من صاحب قواعد المنهج الأربع؟",["ديكارت","ابن رشد","راسل"],0,"رينيه ديكارت."],
+["ما موقف ابن رشد من الفلسفة والدين؟",["التوافق في طلب الحقيقة","التعارض المطلق","رفض النظر العقلي"],0,"يرى التوافق مع اختلاف وسيلة المعرفة."]
+];
+const flashcards=[
+["ما معنى الميتوس؟","تفسير أسطوري يعتمد الحكاية والخيال.","الفلسفة"],
+["ما اللوغوس؟","التفكير العقلي والمنطقي القائم على الحجة.","الفلسفة"],
+["ما الحركة الإنسية؟","حركة فكرية وثقافية اهتمت بالإنسان والعلوم والآداب والفنون.","التاريخ"],
+["ما التجوية؟","تفكك الصخور أو تحللها بفعل عوامل طبيعية.","الجغرافيا"],
+["ما خطوط التسوية؟","خطوط تصل بين نقاط متساوية الارتفاع.","الجغرافيا"],
+["ما قواعد ديكارت؟","البداهة، التحليل، التركيب، المراجعة والإحصاء.","الفلسفة"]
+];
+const knowledgeMap={
+ "الفلسفة":"التفكير النقدي ← نشأة الفلسفة ← الميتوس واللوغوس ← ديكارت وابن رشد وراسل",
+ "الإنسية":"عصر النهضة ← إيطاليا ← الطباعة ← التحولات الأدبية والعلمية والفنية",
+ "الإصلاح الديني":"مارتن لوثر ← جون كالفن ← الأنجليكانية ← الانقسام الديني",
+ "التضاريس":"المجموعات البنيوية ← الجبال والهضاب والسهول ← التجوية والتعرية",
+ "الخريطة الطبوغرافية":"المفتاح والمقياس والاتجاهات ← خطوط التسوية ← المقطع الطبوغرافي",
+ "ديكارت":"المنهج العقلي ← الشك المنهجي ← البداهة والتحليل والتركيب والمراجعة",
+ "ابن رشد":"الفلسفة والدين ← الحكمة والشريعة ← النظر البرهاني"
+};
+
+/* =========================================================
+   الحالة والتخزين
+   ========================================================= */
+const STORAGE_KEYS=["fs_xp","fs_correct","fs_done","fs_certs","fs_wrong","fs_profile","fs_dark","fs_flash_seen","fs_quiz_done"];
+const state={
+  xp:Number(localStorage.getItem("fs_xp")||0),
+  correct:Number(localStorage.getItem("fs_correct")||0),
+  done:JSON.parse(localStorage.getItem("fs_done")||"[]"),
+  certs:JSON.parse(localStorage.getItem("fs_certs")||"[]"),
+  wrong:JSON.parse(localStorage.getItem("fs_wrong")||"[]"),
+  flashSeen:JSON.parse(localStorage.getItem("fs_flash_seen")||"[]"),
+  quizDone:JSON.parse(localStorage.getItem("fs_quiz_done")||"[]")
+};
+function persist(){
+  localStorage.setItem("fs_xp",state.xp);
+  localStorage.setItem("fs_correct",state.correct);
+  localStorage.setItem("fs_done",JSON.stringify(state.done));
+  localStorage.setItem("fs_certs",JSON.stringify(state.certs));
+  localStorage.setItem("fs_wrong",JSON.stringify(state.wrong));
+  localStorage.setItem("fs_flash_seen",JSON.stringify(state.flashSeen));
+  localStorage.setItem("fs_quiz_done",JSON.stringify(state.quizDone));
+  updateStats();
+  scheduleCloudSave();
+}
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+/* =========================================================
+   التنقل والواجهة
+   ========================================================= */
+function showPage(id){
+  document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));
+  const el=document.getElementById(id);
+  if(el)el.classList.remove("hidden");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function toggleTheme(){
+  document.body.classList.toggle("dark");
+  localStorage.setItem("fs_dark",document.body.classList.contains("dark")?"true":"false");
+}
+function updateStats(){
+  const pct=Math.min(100,Math.round(state.done.length/lessons.length*100));
+  ["sideProgress","mainProgress"].forEach(id=>{
+    const el=document.getElementById(id); if(el)el.style.width=pct+"%";
+  });
+  const sidePct=document.getElementById("sidePct"); if(sidePct)sidePct.textContent=pct+"%";
+  const progPct=document.getElementById("progressPercent"); if(progPct)progPct.textContent=pct+"% من مسار التعلم";
+  const xpLabel=document.getElementById("xpLabel"); if(xpLabel)xpLabel.textContent="⭐ "+state.xp+" XP";
+  const statXP=document.getElementById("statXP"); if(statXP)statXP.textContent=state.xp;
+  const progressXP=document.getElementById("progressXP"); if(progressXP)progressXP.textContent=state.xp;
+  const statCorrect=document.getElementById("statCorrect"); if(statCorrect)statCorrect.textContent=state.correct;
+  const statCert=document.getElementById("statCert"); if(statCert)statCert.textContent=state.certs.length;
+  // مهام اليوم
+  const missionBar=document.getElementById("missionBar");
+  const missionText=document.getElementById("missionText");
+  if(missionBar){
+    const mp=Math.min(100,Math.round(state.correct/5*100));
+    missionBar.style.width=mp+"%";
+    if(missionText)missionText.textContent=Math.min(state.correct,5)+" من 5 إجابات صحيحة";
+  }
+  const rankText=document.getElementById("rankText");
+  if(rankText)rankText.textContent=rankLabel(state.xp);
+  const badges=document.getElementById("badges");
+  if(badges){
+    const list=[
+      state.xp>=20?"🏅 بداية موفقة":"",
+      state.correct>=5?"🎯 صياد الإجابات":"",
+      state.done.length>=3?"📚 قارئ نشيط":"",
+      state.flashSeen.length>=flashcards.length?"🃏 حافظ المفاهيم":""
+    ].filter(Boolean);
+    badges.innerHTML=list.length?list.map(b=>`<span class="tag">${b}</span>`).join(" "):"لم تحصل على شارة بعد.";
+  }
+  const certificates=document.getElementById("certificates");
+  if(certificates){
+    certificates.innerHTML=state.certs.map(c=>`<div class="lesson">🏅 ${escapeHtml(c)}</div>`).join("")||"<p class='muted'>أكمل الوحدات للحصول على شهاداتك.</p>";
+  }
+  if(typeof renderProfile==="function")renderProfile();
+}
+function rankLabel(xp){return xp>=300?"فيلسوف متمرس":xp>=150?"مفكر متقدم":xp>=50?"باحث":"باحث مبتدئ";}
+
+/* =========================================================
+   الدروس
+   ========================================================= */
+function renderLessons(){
+  const q=(document.getElementById("searchLesson")?.value||"").toLowerCase();
+  const list=document.getElementById("lessonList");
+  if(!list)return;
+  list.innerHTML=lessons.map((l,i)=>({...l,i}))
+    .filter(l=>(l.title+l.subject).toLowerCase().includes(q))
+    .map(l=>`<div class="lesson"><span class="tag">${escapeHtml(l.subject)}</span><h3>${escapeHtml(l.title)}</h3><p>${escapeHtml(l.summary.slice(0,115))}...</p><button class="secondary" onclick="Filo.openLesson(${l.i})">افتح الدرس</button></div>`)
+    .join("");
+}
+function openLesson(i){
+  const l=lessons[i]; if(!l)return;
+  const detail=document.getElementById("lessonDetail");
+  if(!detail)return;
+  detail.classList.remove("hidden");
+  detail.innerHTML=`<span class="tag">${escapeHtml(l.subject)}</span><h2>${escapeHtml(l.title)}</h2>
+    <h3>ملخص الدرس</h3><p>${escapeHtml(l.summary)}</p>
+    <h3>مفاهيم أساسية</h3><p>${escapeHtml(l.terms)}</p>
+    <h3>أسئلة للمراجعة</h3><p>${escapeHtml(l.questions)}</p>
+    <div class="row">
+      <button onclick="Filo.speakLesson(${i})">🔊 استمع للدرس</button>
+      <button class="secondary" onclick="Filo.markDone(${i})">أكملت الدرس ✓</button>
+    </div>`;
+  detail.scrollIntoView({behavior:"smooth"});
+}
+function speakLesson(i){
+  const l=lessons[i]; if(!l)return;
+  if(!("speechSynthesis"in window)){alert("ميزة القراءة الصوتية غير مدعومة في هذا المتصفح.");return;}
+  speechSynthesis.cancel();
+  const utter=new SpeechSynthesisUtterance(l.summary+" "+l.terms);
+  utter.lang="ar";
+  speechSynthesis.speak(utter);
+}
+function markDone(i){
+  if(state.done.includes(i)){alert("هذا الدرس مسجل كمكتمل مسبقاً.");return;}
+  state.done.push(i);
+  state.xp+=10;
+  persist();
+  alert("أحسنت! أضيفت 10 نقاط XP.");
+}
+
+/* =========================================================
+   الاختبار
+   ========================================================= */
+let quiz={index:0,answered:false,score:0,pointsGranted:false};
+function loadQuiz(){
+  quiz.index=0;quiz.score=0;quiz.answered=false;quiz.pointsGranted=false;
+  paintQuiz();
+}
+function paintQuiz(){
+  const q=quizData[quiz.index]; if(!q)return;
+  quiz.answered=false;
+  const question=document.getElementById("question");
+  const qCount=document.getElementById("quizCount");
+  const qProg=document.getElementById("quizProgress");
+  const feedback=document.getElementById("feedback");
+  const nextBtn=document.getElementById("nextQ");
+  const answers=document.getElementById("answers");
+  if(question)question.textContent=q[0];
+  if(qCount)qCount.textContent=`سؤال ${quiz.index+1} من ${quizData.length}`;
+  if(qProg)qProg.style.width=(quiz.index/quizData.length*100)+"%";
+  if(feedback)feedback.textContent="";
+  if(nextBtn)nextBtn.disabled=true;
+  if(answers)answers.innerHTML=q[1].map((a,i)=>`<button class="answer" onclick="Filo.answerQuiz(${i})">${escapeHtml(a)}</button>`).join("");
+}
+function answerQuiz(i){
+  if(quiz.answered)return;
+  quiz.answered=true;
+  const q=quizData[quiz.index];
+  const buttons=[...document.querySelectorAll("#answers .answer")];
+  if(buttons[q[2]])buttons[q[2]].classList.add("correct");
+  const feedback=document.getElementById("feedback");
+  const nextBtn=document.getElementById("nextQ");
+  if(i===q[2]){
+    quiz.score++;
+    state.correct++;
+    if(!quiz.pointsGranted){state.xp+=10;}
+    if(feedback)feedback.textContent="إجابة صحيحة! "+q[3];
+  }else{
+    if(buttons[i])buttons[i].classList.add("wrong");
+    state.wrong.push({q:q[0],a:q[1][q[2]],why:q[3]});
+    if(state.wrong.length>50)state.wrong=state.wrong.slice(-50);
+    if(feedback)feedback.textContent="ليست الإجابة الصحيحة. "+q[3];
+  }
+  persist();
+  if(nextBtn)nextBtn.disabled=false;
+}
+function nextQuestion(){
+  if(quiz.index<quizData.length-1){
+    quiz.index++;
+    paintQuiz();
+  }else{
+    const question=document.getElementById("question");
+    const answers=document.getElementById("answers");
+    const qProg=document.getElementById("quizProgress");
+    if(question)question.textContent=`انتهى الاختبار! نتيجتك ${quiz.score} من ${quizData.length}`;
+    if(answers)answers.innerHTML="<p>يمكنك مراجعة أخطائك من صفحة المعلم الذكي بكتابة «أخطائي».</p>";
+    const nextBtn=document.getElementById("nextQ"); if(nextBtn)nextBtn.disabled=true;
+    if(qProg)qProg.style.width="100%";
+    // منع منح النقاط مجدداً في إعادة لنفس الجلسة
+    if(!quiz.pointsGranted){
+      quiz.pointsGranted=true;
+      if(quiz.score>=7)issueCertificate("إتمام اختبار المعرفة");
+    }
+  }
+}
+function restartQuiz(){loadQuiz();}
+
+/* =========================================================
+   بطاقات الحفظ
+   ========================================================= */
+let flashIndex=0;
+function showFlash(){
+  const f=flashcards[flashIndex]; if(!f)return;
+  const fq=document.getElementById("flashQ"); if(fq)fq.textContent=f[0];
+  const fa=document.getElementById("flashA"); if(fa){fa.textContent=f[1];fa.classList.add("hidden");}
+  const ft=document.getElementById("flashTopic"); if(ft)ft.textContent=f[2];
+  if(!state.flashSeen.includes(flashIndex)){
+    state.flashSeen.push(flashIndex);
+    persist();
+  }
+}
+function nextFlash(){flashIndex=(flashIndex+1)%flashcards.length;showFlash();}
+function prevFlash(){flashIndex=(flashIndex+flashcards.length-1)%flashcards.length;showFlash();}
+
+/* =========================================================
+   المعلم الذكي
+   ========================================================= */
+function setTutorPrompt(t){
+  const input=document.getElementById("aiInput");
+  if(!input)return;
+  input.value=t; input.focus();
+}
+function tutorAnswer(rawQ){
+  const lower=rawQ.toLowerCase();
+  if(lower.includes("أخطائي")||lower.includes("اخطائي")){
+    if(!state.wrong.length)return "لا توجد أخطاء مسجلة بعد. جرّب الاختبار أولاً.";
+    return "<b>مراجعة أخطائك</b>"+state.wrong.slice(-6).reverse().map((w,i)=>`<div class="lesson"><b>${i+1}. ${escapeHtml(w.q)}</b><p>الإجابة الصحيحة: ${escapeHtml(w.a)}</p><small>${escapeHtml(w.why)}</small></div>`).join("");
+  }
+  if(lower.includes("أسئلة")||lower.includes("تدريب")||lower.includes("اختبرني")){
+    return "<b>أسئلة تدريبية</b><br>"+quizData.slice(0,5).map((x,i)=>(i+1)+". "+escapeHtml(x[0])).join("<br>");
+  }
+  const term=glossary.find(g=>lower.includes(g[0].toLowerCase()));
+  if(term)return `<b>${escapeHtml(term[0])}</b><p>${escapeHtml(term[1])}</p><p class="muted">حاول الآن صياغة التعريف بأسلوبك.</p>`;
+  const words=lower.split(/[\s،؟?!.:؛]+/).filter(w=>w.length>2);
+  const ranked=lessons.map(l=>({l,score:words.reduce((n,w)=>n+((l.title+" "+l.summary+" "+l.terms+" "+l.questions).toLowerCase().includes(w)?1:0),0)})).sort((x,y)=>y.score-x.score);
+  const best=ranked[0];
+  if(best&&best.score>0){
+    const l=best.l;
+    const wantSummary=lower.includes("لخص")||lower.includes("ملخص");
+    const wantTerms=lower.includes("مفهوم")||lower.includes("تعريف");
+    let body="";
+    if(wantSummary)body=`<p>${escapeHtml(l.summary)}</p>`;
+    else if(wantTerms)body=`<p>${escapeHtml(l.terms)}</p>`;
+    else body=`<h4>ملخص الدرس</h4><p>${escapeHtml(l.summary)}</p><h4>المفاهيم الأساسية</h4><p>${escapeHtml(l.terms)}</p><h4>أسئلة للمراجعة</h4><p>${escapeHtml(l.questions)}</p>`;
+    return `<span class="tag">${escapeHtml(l.subject)}</span><b>${escapeHtml(l.title)}</b>${body}<p class="muted">اختر عنوان الدرس بدقة إذا كنت تقصد درساً آخر.</p>`;
+  }
+  if(lower.includes("شرح")||lower.includes("بسط"))return "اكتب اسم الدرس الذي تريد شرحه، مثل الحركة الإنسية أو الإصلاح الديني أو التضاريس أو قواعد المنهج.";
+  return "أستطيع المساعدة في الدروس العشرة. جرّب سؤالاً مثل: ما أسباب الإصلاح الديني؟ ما الفرق بين التجوية والتعرية؟ أو ما قواعد ديكارت؟";
+}
+function askAI(){
+  const input=document.getElementById("aiInput"); if(!input)return;
+  const q=input.value.trim(); if(!q)return;
+  const chat=document.getElementById("chat"); if(!chat)return;
+  // إدخال المستخدم كنص آمن
+  const userBubble=document.createElement("div");
+  userBubble.className="bubble user";
+  userBubble.textContent=q;
+  chat.appendChild(userBubble);
+  // الرد الآمن
+  const replyBubble=document.createElement("div");
+  replyBubble.className="bubble";
+  replyBubble.innerHTML=tutorAnswer(q); // tutorAnswer يستخدم escapeHtml داخلياً
+  chat.appendChild(replyBubble);
+  chat.scrollTop=chat.scrollHeight;
+  input.value="";
+}
+
+/* =========================================================
+   مختبر الخريطة
+   ========================================================= */
+function terrainHeight(nx,ny){
+  const peak1=Math.exp(-(((nx-.36)**2)/.055+((ny-.34)**2)/.10));
+  const peak2=.68*Math.exp(-(((nx-.78)**2)/.08+((ny-.70)**2)/.055));
+  const valley=.34*Math.exp(-(((nx-.56)**2)/.025+((ny-.52)**2)/.20));
+  return Math.round(90+peak1*390+peak2*260-valley*110+35*Math.sin(nx*8)*Math.cos(ny*5));
+}
+function topoClick(ev){
+  const svg=document.getElementById("topoSvg"); if(!svg)return;
+  const pt=svg.createSVGPoint();
+  pt.x=ev.clientX; pt.y=ev.clientY;
+  const p=pt.matrixTransform(svg.getScreenCTM().inverse());
+  const x=Math.max(0,Math.min(760,p.x));
+  const y=Math.max(0,Math.min(430,p.y));
+  const marker=document.getElementById("mapMarker");
+  if(marker)marker.innerHTML=`<circle cx="${x}" cy="${y}" r="11" fill="#fff" stroke="#5546d7" stroke-width="4"/><circle cx="${x}" cy="${y}" r="3.5" fill="#5546d7"/>`;
+  const h=terrainHeight(x/760,y/430);
+  const slope=Math.abs(terrainHeight(Math.min(1,x/760+.025),y/430)-h)*2.2;
+  const label=slope>30?"شديد":slope>13?"متوسط":"ضعيف";
+  const mapElev=document.getElementById("mapElevation"); if(mapElev)mapElev.textContent=h+" متر";
+  const mapSlope=document.getElementById("mapSlope"); if(mapSlope)mapSlope.textContent=label;
+  const mapContour=document.getElementById("mapContour"); if(mapContour)mapContour.textContent=(Math.round(h/50)*50)+" متر";
+  const mapInterp=document.getElementById("mapInterpretation");
+  if(mapInterp)mapInterp.textContent=`هذا الموضع يقع على ارتفاع يقارب ${h} م. والانحدار في اتجاه الشرق ${label} وفق النموذج التعليمي.`;
+}
+function drawTopoProfile(){
+  const svg=document.getElementById("profileChart"); if(!svg)return;
+  // نأخذ نقاط الخط A–B الفعلي كما هو مرسوم: A=(75,365) B=(685,55)
+  const A={x:75,y:365}, B={x:685,y:55};
+  const vals=[];
+  for(let i=0;i<=40;i++){
+    const t=i/40;
+    const x=A.x+(B.x-A.x)*t;
+    const y=A.y+(B.y-A.y)*t;
+    vals.push(terrainHeight(x/760,y/430));
+  }
+  const min=Math.min(...vals)-20, max=Math.max(...vals)+20;
+  const pts=vals.map((v,i)=>`${35+i*630/40},${175-(v-min)/(max-min)*135}`).join(" ");
+  svg.innerHTML=`<path d="M35 25V175H665" fill="none" stroke="currentColor" opacity=".55"/><path d="M35 175 L${pts} L665 175 Z" fill="#5546d7" opacity=".14"/><polyline points="${pts}" fill="none" stroke="#5546d7" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><text x="35" y="195" fill="currentColor" font-size="12">A</text><text x="665" y="195" text-anchor="end" fill="currentColor" font-size="12">B</text><text x="35" y="17" fill="currentColor" font-size="12">الارتفاع: ${Math.round(min)}–${Math.round(max)} م</text>`;
+}
+function resetTopoLab(){
+  const marker=document.getElementById("mapMarker");
+  if(marker)marker.innerHTML='<circle cx="380" cy="210" r="10" fill="#fff" stroke="#5546d7" stroke-width="4"/><circle cx="380" cy="210" r="3" fill="#5546d7"/>';
+  const mapElev=document.getElementById("mapElevation"); if(mapElev)mapElev.textContent="— متر";
+  const mapSlope=document.getElementById("mapSlope"); if(mapSlope)mapSlope.textContent="—";
+  const mapContour=document.getElementById("mapContour"); if(mapContour)mapContour.textContent="100 متر";
+  const mapInterp=document.getElementById("mapInterpretation"); if(mapInterp)mapInterp.textContent="ابدأ بالنقر على نقطة داخل الخريطة.";
+  const profile=document.getElementById("profileChart");
+  if(profile)profile.innerHTML='<text x="350" y="105" text-anchor="middle" fill="currentColor" font-size="15">اضغط «إنشاء المقطع الطبوغرافي» لعرض المنحنى</text>';
+}
+
+/* =========================================================
+   خريطة المعرفة / التحدي / التركيز
+   ========================================================= */
+function knowledge(n){
+  const res=document.getElementById("knowledgeResult"); if(!res)return;
+  res.innerHTML="<b>"+escapeHtml(n)+"</b><p>"+escapeHtml(knowledgeMap[n]||"لا توجد روابط مسجلة لهذا المفهوم.")+"</p>";
+}
+let challenge={timer:null,endTime:0,score:0};
+function startChallenge(){
+  if(challenge.timer){clearInterval(challenge.timer);challenge.timer=null;}
+  challenge.endTime=Date.now()+60000;
+  challenge.score=0;
+  const scoreEl=document.getElementById("challengeScore"); if(scoreEl)scoreEl.textContent="النقاط: 0";
+  const area=document.getElementById("challengeArea"); if(!area)return;
+  area.innerHTML="<p>استعد...</p>";
+  challenge.timer=setInterval(()=>{
+    const remain=Math.max(0,Math.ceil((challenge.endTime-Date.now())/1000));
+    const clock=document.getElementById("challengeClock"); if(clock)clock.textContent=remain;
+    if(remain<=0){
+      clearInterval(challenge.timer);
+      challenge.timer=null;
+      area.innerHTML="<b>انتهى التحدي! أحسنت.</b>";
+      if(challenge.score>0){state.xp+=challenge.score*5;persist();}
+    }
+  },250);
+  paintChallengeQuestion();
+}
+function paintChallengeQuestion(){
+  const area=document.getElementById("challengeArea"); if(!area)return;
+  const q=quizData[Math.floor(Math.random()*quizData.length)];
+  area.innerHTML=`<p>${escapeHtml(q[0])}</p>`+q[1].map((a,i)=>`<button class="answer" onclick="Filo.challengeAnswer(${i},${q[2]})">${escapeHtml(a)}</button>`).join("");
+}
+function challengeAnswer(i,correctIndex){
+  if(Date.now()>=challenge.endTime)return;
+  const scoreEl=document.getElementById("challengeScore");
+  const area=document.getElementById("challengeArea");
+  if(i===correctIndex){
+    challenge.score++;
+    if(scoreEl)scoreEl.textContent="النقاط: "+challenge.score;
+    if(area)area.innerHTML="<p>صحيح! استعد للسؤال التالي...</p>";
+    setTimeout(()=>{if(Date.now()<challenge.endTime)paintChallengeQuestion();},500);
+  }else{
+    if(area)area.innerHTML="<p>ليست صحيحة. السؤال التالي...</p>";
+    setTimeout(()=>{if(Date.now()<challenge.endTime)paintChallengeQuestion();},600);
+  }
+}
+let focus={sec:1500,timer:null};
+function paintFocus(){
+  const clock=document.getElementById("focusClock"); if(!clock)return;
+  clock.textContent=String(Math.floor(focus.sec/60)).padStart(2,"0")+":"+String(focus.sec%60).padStart(2,"0");
+}
+function startFocus(){
+  if(focus.timer)return;
+  focus.timer=setInterval(()=>{
+    if(focus.sec>0){focus.sec--;paintFocus();}
+    else{
+      clearInterval(focus.timer);focus.timer=null;
+      const msg=document.getElementById("focusMessage");
+      if(msg)msg.textContent="انتهت جلسة التركيز! خذ استراحة قصيرة.";
+      state.xp+=15;persist();
+    }
+  },1000);
+}
+function pauseFocus(){if(focus.timer){clearInterval(focus.timer);focus.timer=null;}}
+function resetFocus(){pauseFocus();focus.sec=1500;paintFocus();}
+
+/* =========================================================
+   القاموس / الشهادات / الملف
+   ========================================================= */
+function renderGlossary(){
+  const q=document.getElementById("glossSearch")?.value||"";
+  const list=document.getElementById("glossList"); if(!list)return;
+  list.innerHTML=glossary.filter(g=>(g[0]+g[1]).includes(q))
+    .map(g=>`<div class="lesson"><b>${escapeHtml(g[0])}</b><p>${escapeHtml(g[1])}</p></div>`).join("");
+}
+function issueCertificate(name){
+  const title=name||"شهادة إنجاز FiloSocial";
+  if(!state.certs.includes(title)){
+    state.certs.push(title);
+    persist();
+    alert("تمت إضافة شهادة الإنجاز إلى ملفك المحلي.");
+  }else{
+    alert("هذه الشهادة مسجلة مسبقاً.");
+  }
+}
+const profileDefaults={name:"متعلم FiloSocial",grade:"الجذع المشترك",emoji:"🎓"};
+function getProfile(){
+  try{return {...profileDefaults,...JSON.parse(localStorage.getItem("fs_profile")||"{}")};}
+  catch(e){return profileDefaults;}
+}
+function saveProfile(){
+  const p={
+    name:(document.getElementById("profileName")?.value.trim()||profileDefaults.name).slice(0,24),
+    grade:document.getElementById("profileGrade")?.value||profileDefaults.grade,
+    emoji:document.getElementById("profileEmoji")?.value||profileDefaults.emoji
+  };
+  localStorage.setItem("fs_profile",JSON.stringify(p));
+  renderProfile();
+  scheduleCloudSave();
+  alert("تم حفظ ملفك الشخصي على هذا الجهاز.");
+}
+function renderProfile(){
+  const p=getProfile();
+  const setVal=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v;};
+  setVal("profileName",p.name);setVal("profileGrade",p.grade);setVal("profileEmoji",p.emoji);
+  const setTxt=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  setTxt("profileDisplayName",p.name);
+  setTxt("profileMeta",p.grade+" · متعلم");
+  setTxt("profileAvatar",p.emoji);
+  setTxt("profileXP",state.xp+" XP");
+  setTxt("profileDone",state.done.length+" / "+lessons.length);
+  setTxt("profileCorrect",state.correct);
+  setTxt("profileCerts",state.certs.length);
+  setTxt("profileRank",rankLabel(state.xp));
+  const prog=document.getElementById("profileProgress"); if(prog)prog.style.width=Math.min(100,state.done.length/lessons.length*100)+"%";
+  setTxt("profileProgressText","أكملت "+state.done.length+" من أصل "+lessons.length+" دروس.");
+}
+
+/* =========================================================
+   السحابة (Supabase) مع Debounce
+   ========================================================= */
+/*
+  ملاحظة أمنية مهمة: قبل تفعيل المزامنة، نفّذ في Supabase SQL:
+
+  create table if not exists student_progress (
+    user_id uuid primary key references auth.users(id) on delete cascade,
+    learning_state jsonb not null,
+    updated_at timestamptz default now()
+  );
+  alter table student_progress enable row level security;
+  create policy "own row select" on student_progress for select using (auth.uid() = user_id);
+  create policy "own row upsert" on student_progress for insert with check (auth.uid() = user_id);
+  create policy "own row update" on student_progress for update using (auth.uid() = user_id);
+
+  لا تضع service_role key في المتصفح أبداً.
+*/
+const SUPABASE_CONFIG={url:"YOUR_SUPABASE_PROJECT_URL",anonKey:"YOUR_SUPABASE_ANON_KEY"};
+let fsSupabase=null,fsCloudUser=null,cloudSaveTimer=null;
+function cloudReady(){
+  return !!(window.supabase && SUPABASE_CONFIG.url.startsWith("https://") && SUPABASE_CONFIG.anonKey.length>20 && !SUPABASE_CONFIG.anonKey.includes("YOUR_"));
+}
+function authMessage(msg){const el=document.getElementById("authMessage");if(el)el.textContent=msg;}
+function setCloudStatus(msg){
+  const s=document.getElementById("cloudStatus");
+  if(s)s.innerHTML="<b>الحالة: "+escapeHtml(msg)+"</b><p class=\"muted\">تُحمّل بيانات تقدمك من قاعدة البيانات الآمنة.</p>";
+}
+async function initCloud(){
+  if(!cloudReady()){
+    const s=document.getElementById("cloudStatus");
+    if(s)s.innerHTML='<b>الحالة: غير مربوط بالخادم</b><p class="muted">أضف رابط مشروع Supabase ومفتاح anon العام في إعدادات الموقع، ثم نفّذ SQL المرفق لتفعيل الحسابات والمزامنة.</p>';
+    return;
+  }
+  fsSupabase=window.supabase.createClient(SUPABASE_CONFIG.url,SUPABASE_CONFIG.anonKey);
+  const {data}=await fsSupabase.auth.getSession();
+  fsCloudUser=data.session?.user||null;
+  if(fsCloudUser){await loadCloudProgress();setCloudStatus("متصل بالحساب: "+fsCloudUser.email);}
+}
+function collectLearningState(){
+  return {
+    xp:String(state.xp),
+    profile:localStorage.getItem("fs_profile")||"{}",
+    done:JSON.stringify(state.done),
+    correct:String(state.correct),
+    certificates:JSON.stringify(state.certs),
+    flash_seen:JSON.stringify(state.flashSeen)
+  };
+}
+function scheduleCloudSave(){
+  if(!fsSupabase||!fsCloudUser)return;
+  if(cloudSaveTimer)clearTimeout(cloudSaveTimer);
+  cloudSaveTimer=setTimeout(saveCloudProgress,1500);
+}
+async function saveCloudProgress(){
+  if(!fsSupabase||!fsCloudUser)return;
+  const payload={user_id:fsCloudUser.id,learning_state:collectLearningState(),updated_at:new Date().toISOString()};
+  const {error}=await fsSupabase.from("student_progress").upsert(payload,{onConflict:"user_id"});
+  if(error)authMessage("تم الدخول، لكن تعذرت مزامنة التقدم: "+error.message);
+}
+async function loadCloudProgress(){
+  if(!fsSupabase||!fsCloudUser)return;
+  const {data,error}=await fsSupabase.from("student_progress").select("learning_state").eq("user_id",fsCloudUser.id).maybeSingle();
+  if(error){authMessage("تعذر تحميل التقدم من الخادم.");return;}
+  if(data?.learning_state){
+    const s=data.learning_state;
+    try{
+      if(s.xp!==undefined)state.xp=Number(s.xp)||0;
+      if(s.correct!==undefined)state.correct=Number(s.correct)||0;
+      if(s.done)state.done=JSON.parse(s.done);
+      if(s.certificates)state.certs=JSON.parse(s.certificates);
+      if(s.flash_seen)state.flashSeen=JSON.parse(s.flash_seen);
+      if(s.profile)localStorage.setItem("fs_profile",s.profile);
+      persist();
+      renderProfile();
+    }catch(e){console.warn("تعذر تحليل بيانات السحابة",e);}
+  }
+}
+async function cloudSignUp(){
+  if(!fsSupabase){authMessage("الحسابات غير مفعلة بعد. يجب إعداد Supabase أولاً.");return;}
+  const email=document.getElementById("authEmail")?.value.trim();
+  const password=document.getElementById("authPassword")?.value;
+  if(!email||!password||password.length<8){authMessage("أدخل بريداً صحيحاً وكلمة مرور من 8 أحرف على الأقل.");return;}
+  const {data,error}=await fsSupabase.auth.signUp({email,password});
+  if(error){authMessage(error.message);return;}
+  fsCloudUser=data.user;
+  authMessage("تم إرسال رسالة تأكيد إن تطلب إعداد المشروع ذلك. لا تشارك كلمة المرور.");
+  if(data.session)await saveCloudProgress();
+}
+async function cloudSignIn(){
+  if(!fsSupabase){authMessage("الحسابات غير مفعلة بعد. يجب إعداد Supabase أولاً.");return;}
+  const email=document.getElementById("loginEmail")?.value.trim();
+  const password=document.getElementById("loginPassword")?.value;
+  const {data,error}=await fsSupabase.auth.signInWithPassword({email,password});
+  if(error){authMessage("تعذر تسجيل الدخول. تحقق من البيانات أو إعدادات التأكيد.");return;}
+  fsCloudUser=data.user;
+  setCloudStatus("متصل بالحساب: "+email);
+  await loadCloudProgress();
+  authMessage("تم تسجيل الدخول ومزامنة التقدم.");
+}
+async function cloudSignOut(){
+  if(!fsSupabase)return;
+  const {error}=await fsSupabase.auth.signOut();
+  if(error){authMessage(error.message);return;}
+  fsCloudUser=null;
+  authMessage("تم تسجيل الخروج. تبقى نسخة هذا الجهاز محلية.");
+  setCloudStatus("غير مسجل الدخول");
+}
+
+/* =========================================================
+   التهيئة العامة
+   ========================================================= */
+function init(){
+  if(localStorage.getItem("fs_dark")==="true")document.body.classList.add("dark");
+  document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+  const topo=document.getElementById("topoSvg");
+  if(topo)topo.addEventListener("click",topoClick);
+  renderLessons();
+  renderGlossary();
+  loadQuiz();
+  showFlash();
+  paintFocus();
+  renderProfile();
+  updateStats();
+  initCloud();
+  document.addEventListener("visibilitychange",()=>{
+    if(document.visibilityState==="hidden"&&fsSupabase&&fsCloudUser){
+      // استخدام keepalive عبر sendBeacon غير ممكن مع supabase-js؛ نستدعي الحفظ العادي
+      saveCloudProgress();
+    }
+  });
+}
+
+// واجهة عامة للاستخدام من onclick في HTML
+window.Filo={
+  showPage,toggleTheme,renderLessons,openLesson,speakLesson,markDone,
+  nextQuestion,restartQuiz,prevFlash,nextFlash,setTutorPrompt,askAI,
+  drawTopoProfile,resetTopoLab,knowledge,startChallenge,challengeAnswer,
+  startFocus,pauseFocus,resetFocus,renderGlossary,issueCertificate,
+  saveProfile,cloudSignUp,cloudSignIn,cloudSignOut,
+  answerQuiz
+};
+
+document.addEventListener("DOMContentLoaded",init);
+})();
+</script></body></html>
