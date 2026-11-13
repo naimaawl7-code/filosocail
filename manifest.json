@@ -4,5 +4,9 @@
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#5546d7"
+  "theme_color": "#5546d7",
+  "dir": "rtl",
+  "lang": "ar",
+  "orientation": "portrait",
+  "description": "منصة تعليمية للفلسفة والاجتماعيات"
 }
